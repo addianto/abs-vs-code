@@ -15,12 +15,14 @@ jobs:
           uses: actions/setup-node@v2
           with:
             node-version: '14'
+        - id: get_version
+          uses: battila7/get-version-action@v2
         - name: Install dependencies
           run: npm ci
         - name: Build the extension
           run: |
             npm run package
-            mv *.vsix "abs-vs-code-${{ github.ref }}.vsix"
+            mv *.vsix "abs-vs-code-${{ steps.get_version.outputs.version-without-v }}.vsix"
         - name: Create Release
           id: create_release
           uses: actions/create-release@v1
@@ -28,7 +30,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             tag_name: ${{ github.ref }}
-            release_name: Release ${{ github.ref }}
+            release_name: Release ${{ steps.get_version.outputs.version }}
             draft: false
             prerelease: false
         - name: Upload Release asset 
@@ -38,5 +40,5 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: "./abs-vs-code-${{ github.ref }}.vsix"
-            asset_name: "abs-vs-code-${{ github.ref }}.vsix"
+            asset_path: "./abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
+            asset_name: "abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
