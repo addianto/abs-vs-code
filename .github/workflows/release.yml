@@ -20,9 +20,7 @@ jobs:
         - name: Install dependencies
           run: npm ci
         - name: Build the extension
-          run: |
-            npm run package
-            mv *.vsix "abs-vs-code-${{ steps.get_version.outputs.version-without-v }}.vsix"
+          run: npm run package
         - name: Create Release
           id: create_release
           uses: actions/create-release@v1
@@ -40,6 +38,6 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
-            asset_path: "./abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
-            asset_name: "abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
+            asset_path: "./abs-${{ steps.get_version.outputs.version-without-v }}.vsix"
+            asset_name: "abs-${{ steps.get_version.outputs.version-without-v }}.vsix"
             asset_content_type: application/zip
