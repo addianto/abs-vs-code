@@ -42,3 +42,4 @@ jobs:
             upload_url: ${{ steps.create_release.outputs.upload_url }}
             asset_path: "./abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
             asset_name: "abs-vs-code-${{ steps.get_version.outputs.version }}.vsix"
+            asset_content_type: application/zip
